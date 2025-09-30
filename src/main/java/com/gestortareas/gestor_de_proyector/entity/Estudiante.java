@@ -53,7 +53,4 @@ public class Estudiante {
         return proyectos;
     }
 
-    public void setProyectos(List<Proyecto> proyectos) {
-        this.proyectos = proyectos;
-    }
 }
