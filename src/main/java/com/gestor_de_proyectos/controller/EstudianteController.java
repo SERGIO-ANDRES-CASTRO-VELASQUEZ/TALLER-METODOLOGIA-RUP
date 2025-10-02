@@ -26,7 +26,7 @@ public class EstudianteController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar-estudiante/{id}")
     public ResponseEntity<?> listarPorId(@PathVariable("id") Long id) {
         try {
             Estudiante estudiante = estudianteService.obtenerPorId(id);
@@ -49,7 +49,7 @@ public class EstudianteController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar-estudiante/{id}")
     public ResponseEntity<?> actualizar(@PathVariable("id") Long id, @RequestBody Estudiante estudiante) {
         try {
             Estudiante estudianteExistente = estudianteService.obtenerPorId(id);
@@ -64,7 +64,7 @@ public class EstudianteController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar-estudiante/{id}")
     public ResponseEntity<?> eliminar(@PathVariable("id") Long id) {
         try {
             Estudiante estudiante = estudianteService.obtenerPorId(id);
