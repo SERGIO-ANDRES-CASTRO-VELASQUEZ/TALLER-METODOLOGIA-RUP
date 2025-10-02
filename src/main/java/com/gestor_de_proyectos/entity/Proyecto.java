@@ -1,7 +1,7 @@
-package com.gestortareas.gestor_de_proyector.entity;
+package com.gestor_de_proyectos.entity;
 
-import com.gestortareas.gestor_de_proyector.entity.enums.ProgramaProjecto;
-import com.gestortareas.gestor_de_proyector.entity.enums.Estado;
+import com.gestor_de_proyectos.entity.enums.ProgramaProjecto;
+import com.gestor_de_proyectos.entity.enums.Estado;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

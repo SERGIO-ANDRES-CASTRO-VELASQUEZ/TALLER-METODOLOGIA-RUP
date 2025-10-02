@@ -1,4 +1,4 @@
-package com.gestortareas.gestor_de_proyector;
+package com.gestor_de_proyectos;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

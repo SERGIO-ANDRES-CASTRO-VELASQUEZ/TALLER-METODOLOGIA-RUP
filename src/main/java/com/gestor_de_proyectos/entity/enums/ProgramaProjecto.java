@@ -1,4 +1,4 @@
-package com.gestortareas.gestor_de_proyector.entity.enums;
+package com.gestor_de_proyectos.entity.enums;
 
 public enum ProgramaProjecto {
 

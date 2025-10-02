@@ -1,4 +1,4 @@
-package com.gestortareas.gestor_de_proyector.service;
+package com.gestor_de_proyectos.service;
 
 import java.util.List;
 

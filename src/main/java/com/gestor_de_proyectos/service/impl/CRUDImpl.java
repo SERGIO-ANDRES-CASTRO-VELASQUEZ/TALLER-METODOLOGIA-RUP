@@ -1,6 +1,6 @@
-package com.gestortareas.gestor_de_proyector.service.impl;
+package com.gestor_de_proyectos.service.impl;
 
-import com.gestortareas.gestor_de_proyector.service.ICRUD;
+import com.gestor_de_proyectos.service.ICRUD;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
