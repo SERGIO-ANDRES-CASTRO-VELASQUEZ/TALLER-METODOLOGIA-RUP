@@ -26,7 +26,7 @@ public class ProyectoController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar-proyecto/{id}")
     public ResponseEntity<?> listarPorId(@PathVariable("id") Long id) {
         try {
             Proyecto proyecto = proyectoService.obtenerPorId(id);
@@ -49,7 +49,7 @@ public class ProyectoController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar-proyecto/{id}")
     public ResponseEntity<?> actualizar(@PathVariable("id") Long id, @RequestBody Proyecto proyecto) {
         try {
             Proyecto proyectoExistente = proyectoService.obtenerPorId(id);
@@ -65,7 +65,7 @@ public class ProyectoController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar-proyecto/{id}")
     public ResponseEntity<?> eliminar(@PathVariable("id") Long id) {
         try {
             Proyecto proyecto = proyectoService.obtenerPorId(id);
