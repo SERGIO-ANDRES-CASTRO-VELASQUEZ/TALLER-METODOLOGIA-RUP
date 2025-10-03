@@ -1,8 +1,14 @@
 package com.gestor_de_proyectos.entity;
 
-import jakarta.persistence.*;
-
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Estudiante {
@@ -12,28 +18,11 @@ public class Estudiante {
     private Long id;
 
     @Column(length = 100, nullable = false)
-    private String Nombre;
+    private String nombres;
 
-    //@Column(length = 100, nullable = false)
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "estudiante_proyecto",
-            joinColumns = @JoinColumn (name = "estudiante_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn ( name = "proyecto_id", referencedColumnName = "id")
-
-    )
+    @ManyToMany(mappedBy = "estudiantes", fetch = FetchType.EAGER)
     private List<Proyecto> proyectos;
 
-    //Contructor vacio
-    public Estudiante() {
-    }
-
-    //Constructor con parametros
-
-    public Estudiante(String nombre, List<Proyecto> proyectos) {
-        Nombre = nombre;
-        this.proyectos = proyectos;
-    }
 
     //Getters and Setters
 
@@ -41,12 +30,12 @@ public class Estudiante {
         return id;
     }
 
-    public String getNombre() {
-        return Nombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNombre(String nombre) {
-        Nombre = nombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
     public List<Proyecto> getProyectos() {

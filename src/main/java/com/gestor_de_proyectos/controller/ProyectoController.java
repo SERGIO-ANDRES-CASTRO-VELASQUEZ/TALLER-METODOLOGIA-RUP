@@ -1,81 +1,90 @@
 package com.gestor_de_proyectos.controller;
 
-import com.gestor_de_proyectos.entity.Proyecto;
-import com.gestor_de_proyectos.service.IProyectoService;
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import com.gestor_de_proyectos.dto.ProyectoDTO;
+import com.gestor_de_proyectos.entity.Proyecto;
+import com.gestor_de_proyectos.exception.ModeloNotFoundException;
+import com.gestor_de_proyectos.service.IProyectoService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/proyectos")
 public class ProyectoController {
 
     @Autowired
-    private IProyectoService proyectoService;
+    private IProyectoService service;
+
+	@Autowired
+	private ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<?> listarTodos() {
-        try {
-            List<Proyecto> proyectos = proyectoService.obtenerTodos();
-            return new ResponseEntity<>(proyectos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<ProyectoDTO>> listarTodos() throws Exception{
+    	List<ProyectoDTO> lista = service.obtenerTodos().stream().map(p -> mapper.map(p, ProyectoDTO.class)).collect(Collectors.toList());
+		
+		return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
     @GetMapping("/buscar-proyecto/{id}")
-    public ResponseEntity<?> listarPorId(@PathVariable("id") Long id) {
-        try {
-            Proyecto proyecto = proyectoService.obtenerPorId(id);
-            if (proyecto == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(proyecto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    public ResponseEntity<ProyectoDTO> listarPorId(@PathVariable("id") Long id) throws Exception {
+		Proyecto obj = service.obtenerPorId(id);
+		
+		if(obj == null) {
+			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
+		}
+		
+		ProyectoDTO dto = mapper.map(obj, ProyectoDTO.class);
+		
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Proyecto proyecto) {
-        try {
-            Proyecto nuevoProyecto = proyectoService.crear(proyecto);
-            return new ResponseEntity<>(nuevoProyecto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    public ResponseEntity<Void> crear(@Valid @RequestBody ProyectoDTO dto) throws Exception {
+		Proyecto obj = service.crear(dto);
+		
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(location).build();
+	}
 
     @PutMapping("/actualizar-proyecto/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable("id") Long id, @RequestBody Proyecto proyecto) {
-        try {
-            Proyecto proyectoExistente = proyectoService.obtenerPorId(id);
-            if (proyectoExistente == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            proyecto.setNombre(proyecto.getNombre());
-            proyecto.setDescripcion(proyecto.getDescripcion());
-            Proyecto proyectoActualizado = proyectoService.actualizar(proyecto);
-            return new ResponseEntity<>(proyectoActualizado, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    public ResponseEntity<ProyectoDTO> actualizar(@Valid @RequestBody ProyectoDTO dto) throws Exception {
+		Proyecto obj = service.obtenerPorId(dto.getId());
+		
+		if(obj == null) {
+			throw new ModeloNotFoundException("ID NO ENCONTRADO " + dto.getId());
+		}
+		
+		Proyecto p = mapper.map(dto, Proyecto.class);		
+		Proyecto pActualizado = service.actualizar(p);
+		ProyectoDTO dtoResponse = mapper.map(pActualizado, ProyectoDTO.class);
+		return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
+	}
 
     @DeleteMapping("/eliminar-proyecto/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable("id") Long id) {
-        try {
-            Proyecto proyecto = proyectoService.obtenerPorId(id);
-            if (proyecto == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            proyectoService.eliminar(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) throws Exception {
+		Proyecto obj = service.obtenerPorId(id);
+		
+		if(obj == null) {
+			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
+		}
+		service.eliminar(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 }

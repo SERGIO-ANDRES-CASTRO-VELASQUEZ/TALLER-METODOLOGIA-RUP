@@ -48,25 +48,6 @@ public class Proyecto {
     @Column(nullable = false)
     private  LocalDateTime fechaActualizacion = LocalDateTime.now();
 
-    //Contructor vacio
-    public Proyecto() {
-
-    }
-
-    //Constructor con parametros
-
-    public Proyecto(String nombre, List<Estudiante> estudiantes, String descripcion, ProgramaProjecto areaProjecto, Estado estado, Double valor, LocalDateTime fechaInicio, LocalDateTime fechaFin, LocalDateTime fechaActualizacion) {
-        this.nombre = nombre;
-        this.estudiantes = estudiantes;
-        this.descripcion = descripcion;
-        this.areaProjecto = areaProjecto;
-        this.estado = estado;
-        this.valor = valor;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
 
     //Getters and Setters
 
