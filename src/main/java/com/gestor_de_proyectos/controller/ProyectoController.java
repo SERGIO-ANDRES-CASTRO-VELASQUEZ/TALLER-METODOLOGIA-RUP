@@ -1,7 +1,7 @@
-package com.gestortareas.gestor_de_proyector.controller;
+package com.gestor_de_proyectos.controller;
 
-import com.gestortareas.gestor_de_proyector.entity.Proyecto;
-import com.gestortareas.gestor_de_proyector.service.IProyectoService;
+import com.gestor_de_proyectos.entity.Proyecto;
+import com.gestor_de_proyectos.service.IProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
