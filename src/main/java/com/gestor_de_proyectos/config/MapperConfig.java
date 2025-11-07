@@ -1,4 +1,4 @@
-package com.gestor_de_proyectos;
+package com.gestor_de_proyectos.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
